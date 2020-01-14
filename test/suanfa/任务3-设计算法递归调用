@@ -1,0 +1,52 @@
+#include <iostream>
+#include <set>
+#include <vector>
+
+using namespace std;
+
+typedef multiset<int,greater<int> > IntHeap;
+
+void FindLeastKNum(vector<int> &ivec,
+					int k,
+					IntHeap &leastNum)
+{
+	for(vector<int>::iterator iter= ivec.begin();
+			iter != ivec.end(); iter++)
+	{
+						if(leastNum.size() < k)
+			leastNum.insert(*iter);
+		else
+		{
+			IntHeap::iterator Tmpiter = leastNum.begin();
+			if(*iter < *Tmpiter)
+			{
+					leastNum.erase(Tmpiter);
+					leastNum.insert( *iter );
+			}
+
+		}
+	}
+}
+
+int main()
+{
+	int n;
+	cin>> n ;
+	vector<int> ivec;
+	while(n--)
+	{
+		int num =0;
+		cin >> num;
+		ivec.insert(ivec.begin(),num);
+	}
+	int k;
+	cin >> k;
+	IntHeap leastNum;
+	FindLeastKNum(ivec,k,leastNum);
+
+	cout << "the  least k nums are: " <<endl;
+	for(IntHeap::iterator iter=leastNum.begin();
+		iter != leastNum.end(); iter++)
+		cout << *iter << " ";
+	cout <<endl;
+}

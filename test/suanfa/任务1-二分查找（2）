@@ -1,0 +1,25 @@
+//递归实现二分查找
+#include<iostream>
+#include<assert.h>
+using namespace std;
+int Search(int ar[], int low, int high, int key)
+{
+    if(low > high)  //查找不到
+        return -1;
+    int mid = (low+high)/2;
+    if(key == ar[mid])  //查找到
+        return mid;
+    else if(key < ar[mid])
+        return Search(ar,low,mid-1,key);
+    else
+        return Search(ar,mid+1,high,key);
+}
+int main()
+{
+    int ar[10] = {12,23,34,45,56,67,78,89,90,100};
+    int n = sizeof(ar)/sizeof(int);
+    int key;
+    cout<<"请输入要查找的key值:>";（相当于printf("请输入要查找的key值:");）
+    cin>>key;（相当于scanf("%d",&key);）
+    cout<<"pos :> "<<Search(ar,0,n-1,key)<<endl;
+}

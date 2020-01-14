@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define N 6   //要填充6个点
+
+int a,b,c;    //三个顶点圆圈
+int ab,bc,ac; //三边上的点的圆圈
+int x[N]={0,0,0,0,0,0};//x[i]=1代表物品i符合条件放入圆圈，0代表不放入
+int cursum=0; //当前放入点的每一条边的总和
+int bests=0;  //最优值；当前的最大价值，初始化为0
+int bestx[N];  //最优解；BestX[i]=1代表物品i符合条件放入圆圈，0代表不放入
+
+int  trianglesum(int t){
+	if(t>N-1)  //叶子节点，输出结果。 而 t=0 to N-1
+	{
+		if(cursum>bests)   //找到一个更优的解
+		{	bests=cursum;  //保存更优的值
+			for(int i=0;i<N;++i)
+				bestx[i]=x[i];
+		}
+	}
+	else
+	{	//遍历当前节点的子节点：0不符合条件不放入圆圈，1符合条件放入圆圈
+		for(int i=0;i<=1;++i)
+        {
+            x[t]=i;
+
+            if(i==0) //不放入
+            {
+                trianglesum(t+1);
+            }
+        else //放入背包
+        {    //遍历
+		for (a = 1; a <= 6; a++)
+		for (b = 1; b <= 6; b++)
+		for (c = 1; c <= 6; c++)
+		for (ab = 1; ab <= 6; ab++)
+		for (bc = 1; bc <= 6; bc++)
+		for (ac = 1; ac <= 6; ac++)
+		{ 	//约束条件
+		if (a != b&&a != c&&a != ab&&a != bc&&a != ac
+			&&b != c&&b != ab&&b != bc&&b != ac
+			&&c != ab&&c != bc&&c != ac
+			&&ab != bc&&ab != ac
+			&&bc != ac)
+		{
+		if (a + ab + b == a + ac + c&&a + ab + b == b + bc + c)
+		{
+			printf("这个三角形有\n");
+			printf("  %d \n", a);
+			printf(" %d %d \n", ab, ac);
+			printf("%d %d %d\n", b, bc, c);
+
+			cursum = a+ab+b;
+			trianglesum(t+1);
+		}
+		}
+		}
+		}
+		}
+  	}
+}
+
+int main()
+{
+	trianglesum(0);
+	printf("最优值：%d\n",bests);
+	for(int i=0;i<N;i++)
+    {
+       printf("最优解：%-3d",bestx[i]);
+    }
+    return 0;
+}
